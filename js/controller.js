@@ -72,35 +72,61 @@ const Controller = {
 
   // ── Lofi Player ──
 
+  lofiYTPlayer: null,
+  lofiReady: false,
+
   _initLofi() {
     var self = this;
     var btn = View.el('lofiBtn');
     var label = View.el('lofiLabel');
-    var wrap = View.el('lofiIframeWrap');
+
+    // YouTube IFrame API laden
+    var tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+
+    window.onYouTubeIframeAPIReady = function() {
+      self.lofiYTPlayer = new YT.Player('lofiEmbed', {
+        height: '1',
+        width: '1',
+        videoId: 'jfKfPfyJRdk',
+        playerVars: {
+          autoplay: 0,
+          controls: 0,
+          disablekb: 1,
+          fs: 0,
+          modestbranding: 1,
+          rel: 0,
+          playsinline: 1,
+        },
+        events: {
+          onReady: function() {
+            self.lofiReady = true;
+          },
+          onStateChange: function(event) {
+            // YT.PlayerState.PLAYING = 1, PAUSED = 2, ENDED = 0
+            if (event.data === 1) {
+              btn.classList.add('lofi-playing');
+              label.textContent = 'LIVE';
+              label.style.color = 'var(--calendar-selected)';
+              self.lofiPlaying = true;
+            } else if (event.data === 2 || event.data === 0) {
+              btn.classList.remove('lofi-playing');
+              label.textContent = 'LOFI';
+              label.style.color = '';
+              self.lofiPlaying = false;
+            }
+          },
+        },
+      });
+    };
 
     btn.addEventListener('click', function() {
+      if (!self.lofiReady || !self.lofiYTPlayer) return;
       if (self.lofiPlaying) {
-        // Stop
-        wrap.innerHTML = '';
-        btn.classList.remove('lofi-playing');
-        label.textContent = 'LOFI';
-        label.style.color = '';
-        self.lofiPlaying = false;
+        self.lofiYTPlayer.pauseVideo();
       } else {
-        // Play — YouTube embed mit autoplay
-        var iframe = document.createElement('iframe');
-        iframe.src = 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=0&enablejsapi=1';
-        iframe.allow = 'autoplay; encrypted-media';
-        iframe.setAttribute('allowfullscreen', '');
-        iframe.setAttribute('frameborder', '0');
-        iframe.width = '1';
-        iframe.height = '1';
-        wrap.innerHTML = '';
-        wrap.appendChild(iframe);
-        btn.classList.add('lofi-playing');
-        label.textContent = 'LIVE';
-        label.style.color = 'var(--calendar-selected)';
-        self.lofiPlaying = true;
+        self.lofiYTPlayer.playVideo();
       }
     });
   },
@@ -428,6 +454,7 @@ const Controller = {
     });
   },
 };
+
 
 
 

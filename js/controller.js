@@ -8,6 +8,7 @@ const Controller = {
   calMonth: new Date().getMonth(),
   calendarExpanded: false,
   lofiPlaying: false,
+  chartRange: 'week',
 
   // ── Initialisierung ──
 
@@ -18,6 +19,8 @@ const Controller = {
     this._initLofi();
     this._initStudienplan();
     this._initCalendarExpand();
+    this._initChartRange();
+    this._initICSImport();
     this._bindTodoEvents();
     this._bindFilterEvents();
     this._bindCalendarNav();
@@ -42,7 +45,7 @@ const Controller = {
     this._bindCalendarDayEvents();
 
     View.renderStats(Model.getStats());
-    View.renderLineChart(Model.getWeeklyData());
+    View.renderLineChart(Model.getChartData(this.chartRange));
     View.renderDonutChart(Model.getCategoryData());
   },
 
@@ -58,7 +61,7 @@ const Controller = {
       Model.setTheme(next);
       View.applyTheme(next);
       // Charts müssen nach Theme-Wechsel neu gerendert werden
-      View.renderLineChart(Model.getWeeklyData());
+      View.renderLineChart(Model.getChartData(this.chartRange));
       View.renderDonutChart(Model.getCategoryData());
     });
   },
@@ -293,6 +296,52 @@ const Controller = {
     });
   },
 
+  // ── Chart Zeitraum ──
+
+  _initChartRange() {
+    var self = this;
+    document.querySelectorAll('.chart-range-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.chart-range-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        self.chartRange = btn.dataset.range;
+        View.renderLineChart(Model.getChartData(self.chartRange));
+      });
+    });
+  },
+
+  // ── ICS Kalender Import ──
+
+  _initICSImport() {
+    var self = this;
+    var importBtn = View.el('calImportBtn');
+    var fileInput = View.el('calIcsFile');
+
+    importBtn.addEventListener('click', function() {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', function(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        var text = ev.target.result;
+        var events = Model.parseICS(text);
+        if (events.length === 0) {
+          alert('Keine Termine in der Datei gefunden.');
+          return;
+        }
+        var count = Model.importICSEvents(events);
+        alert(count + ' Termin(e) importiert.');
+        self.renderAll();
+      };
+      reader.readAsText(file);
+      fileInput.value = '';
+    });
+  },
+
   // ── Kalender Navigation ──
 
   _bindCalendarNav() {
@@ -454,6 +503,11 @@ const Controller = {
     });
   },
 };
+
+
+
+
+
 
 
 

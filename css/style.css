@@ -83,9 +83,9 @@
   --tag-lernen: #bbb;
   --tag-lernen-bg: rgba(190,190,190,0.08);
   --donut-1: #ff4444;
-  --donut-2: #e8e8e8;
-  --donut-3: #888888;
-  --donut-4: #444444;
+  --donut-2: #f0c030;
+  --donut-3: #34d474;
+  --donut-4: #4a9eff;
 }
 
 /* ═══════════════════ RESET & BASE ═══════════════════ */
@@ -1074,6 +1074,70 @@ body {
   height: 240px;
 }
 
+.chart-range-btns {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--border);
+}
+
+.chart-range-btn {
+  padding: 4px 10px;
+  border: none;
+  border-right: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.15s ease;
+}
+
+.chart-range-btn:last-child {
+  border-right: none;
+}
+
+.chart-range-btn:hover {
+  color: var(--text);
+}
+
+.chart-range-btn.active {
+  background: var(--text);
+  color: var(--bg);
+}
+
+/* Calendar header actions */
+.cal-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cal-import-btn {
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.cal-import-btn:hover {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
 /* ═══════════════════ RESPONSIVE ═══════════════════ */
 @media (max-width: 900px) {
   .main {
@@ -1610,6 +1674,8 @@ body {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
 
 
 

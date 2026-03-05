@@ -115,6 +115,125 @@ const Model = {
     return { labels, completionData, pointsData };
   },
 
+  getMonthlyData() {
+    const todos = this.getTodos();
+    const labels = [];
+    const completionData = [];
+    const pointsData = [];
+    const now = new Date();
+
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - i);
+      const dateStr = d.toISOString().split('T')[0];
+      const dayLabel = d.getDate() + '.' + (d.getMonth() + 1);
+      labels.push(dayLabel);
+
+      const dayTodos = todos.filter(t => t.date === dateStr);
+      const completed = dayTodos.filter(t => t.completed).length;
+      const total = dayTodos.length;
+      completionData.push(total > 0 ? Math.round((completed / total) * 100) : 0);
+
+      const dayPoints = dayTodos.filter(t => t.completed).reduce((sum, t) => sum + (t.points || 1), 0);
+      pointsData.push(dayPoints);
+    }
+
+    return { labels, completionData, pointsData };
+  },
+
+  getYearlyData() {
+    const todos = this.getTodos();
+    const labels = [];
+    const completionData = [];
+    const pointsData = [];
+    const now = new Date();
+    const monthNames = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+
+    for (let i = 11; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const year = d.getFullYear();
+      const month = d.getMonth();
+      labels.push(monthNames[month]);
+
+      const monthTodos = todos.filter(t => {
+        if (!t.date) return false;
+        const td = new Date(t.date + 'T00:00:00');
+        return td.getFullYear() === year && td.getMonth() === month;
+      });
+
+      const completed = monthTodos.filter(t => t.completed).length;
+      const total = monthTodos.length;
+      completionData.push(total > 0 ? Math.round((completed / total) * 100) : 0);
+
+      const monthPoints = monthTodos.filter(t => t.completed).reduce((sum, t) => sum + (t.points || 1), 0);
+      pointsData.push(monthPoints);
+    }
+
+    return { labels, completionData, pointsData };
+  },
+
+  getChartData(range) {
+    switch (range) {
+      case 'month': return this.getMonthlyData();
+      case 'year': return this.getYearlyData();
+      default: return this.getWeeklyData();
+    }
+  },
+
+  // ── ICS Import ──
+
+  parseICS(icsText) {
+    const events = [];
+    const vevents = icsText.split('BEGIN:VEVENT');
+
+    for (let i = 1; i < vevents.length; i++) {
+      const block = vevents[i].split('END:VEVENT')[0];
+      const summary = this._icsField(block, 'SUMMARY');
+      const dtstart = this._icsField(block, 'DTSTART');
+      const description = this._icsField(block, 'DESCRIPTION');
+
+      if (summary && dtstart) {
+        const date = this._icsParseDate(dtstart);
+        if (date) {
+          events.push({
+            text: summary.replace(/\\n/g, ' ').replace(/\\,/g, ','),
+            date: date,
+            description: description || '',
+          });
+        }
+      }
+    }
+    return events;
+  },
+
+  _icsField(block, field) {
+    // Handle folded lines and various field formats (DTSTART;VALUE=DATE:, DTSTART:, etc.)
+    const regex = new RegExp('(?:^|\\n)' + field + '[^:]*:([^\\r\\n]+)', 'i');
+    const match = block.match(regex);
+    return match ? match[1].trim() : null;
+  },
+
+  _icsParseDate(dtStr) {
+    // Formats: 20260305, 20260305T120000, 20260305T120000Z
+    const clean = dtStr.replace(/[^0-9T]/g, '');
+    if (clean.length >= 8) {
+      const y = clean.substring(0, 4);
+      const m = clean.substring(4, 6);
+      const d = clean.substring(6, 8);
+      return y + '-' + m + '-' + d;
+    }
+    return null;
+  },
+
+  importICSEvents(events) {
+    let imported = 0;
+    events.forEach(ev => {
+      this.addTodo(ev.text, ev.date, 'arbeit', 1);
+      imported++;
+    });
+    return imported;
+  },
+
   getCategoryData() {
     const todos = this.getTodos();
     const counts = { arbeit: 0, persoenlich: 0, gesundheit: 0, lernen: 0 };
@@ -345,6 +464,7 @@ const Model = {
     return gradedEcts > 0 ? (weightedSum / gradedEcts) : null;
   },
 };
+
 
 
 

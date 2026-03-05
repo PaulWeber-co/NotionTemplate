@@ -135,9 +135,13 @@
     <div class="card" id="calendarCard">
       <div class="card-title-row">
         <div class="card-title">Kalender</div>
-        <button class="cal-expand-btn" id="calExpandBtn" title="Kalender vergrößern">
-          <span class="cal-expand-icon" id="calExpandIcon"></span>
-        </button>
+        <div class="cal-header-actions">
+          <button class="cal-import-btn" id="calImportBtn" title="Kalender importieren (.ics)">ICS</button>
+          <input type="file" id="calIcsFile" accept=".ics" class="sr-only" />
+          <button class="cal-expand-btn" id="calExpandBtn" title="Kalender vergrößern">
+            <span class="cal-expand-icon" id="calExpandIcon"></span>
+          </button>
+        </div>
       </div>
       <div class="calendar-nav">
         <button class="calendar-nav-btn" id="calPrev">&lt;</button>
@@ -150,7 +154,14 @@
     <!-- Charts -->
     <div class="charts-row">
       <div class="card">
-        <div class="card-title">Wöchentlicher Fortschritt</div>
+        <div class="card-title-row">
+          <div class="card-title">Fortschritt</div>
+          <div class="chart-range-btns">
+            <button class="chart-range-btn active" data-range="week">Woche</button>
+            <button class="chart-range-btn" data-range="month">Monat</button>
+            <button class="chart-range-btn" data-range="year">Jahr</button>
+          </div>
+        </div>
         <div class="chart-container">
           <canvas id="lineChart"></canvas>
         </div>
@@ -174,6 +185,7 @@
   </script>
 </body>
 </html>
+
 
 
 

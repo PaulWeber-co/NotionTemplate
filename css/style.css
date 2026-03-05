@@ -260,6 +260,131 @@ body {
   color: var(--bg);
 }
 
+/* ═══════════════════ LOFI MINIPLAYER ═══════════════════ */
+.lofi-player {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.lofi-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.lofi-btn:hover {
+  border-color: var(--text);
+  background: var(--bg-hover);
+}
+
+.lofi-btn.lofi-playing {
+  border-color: var(--calendar-selected);
+  background: var(--calendar-selected-light);
+}
+
+/* Play triangle */
+.lofi-icon {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 0 5px 9px;
+  border-color: transparent transparent transparent var(--text-secondary);
+  margin-left: 2px;
+  transition: all 0.15s ease;
+}
+
+.lofi-btn:hover .lofi-icon {
+  border-left-color: var(--text);
+}
+
+.lofi-btn.lofi-playing .lofi-icon {
+  /* Pause icon: two bars */
+  border: none;
+  width: 10px;
+  height: 10px;
+  margin-left: 0;
+  background: transparent;
+  position: relative;
+}
+
+.lofi-btn.lofi-playing .lofi-icon::before,
+.lofi-btn.lofi-playing .lofi-icon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 3px;
+  height: 10px;
+  background: var(--calendar-selected);
+}
+
+.lofi-btn.lofi-playing .lofi-icon::before {
+  left: 0;
+}
+
+.lofi-btn.lofi-playing .lofi-icon::after {
+  right: 0;
+}
+
+.lofi-label {
+  font-size: 8px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+
+.lofi-player:hover .lofi-label {
+  color: var(--text-secondary);
+}
+
+.lofi-playing ~ .lofi-label {
+  color: var(--calendar-selected);
+}
+
+/* Pulsating dot when playing */
+.lofi-btn.lofi-playing::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--calendar-selected);
+  animation: lofiPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes lofiPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* Hidden iframe */
+.lofi-iframe-wrap {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lofi-iframe-wrap iframe {
+  width: 1px;
+  height: 1px;
+}
+
 /* ═══════════════════ MAIN LAYOUT ═══════════════════ */
 .main {
   max-width: 1360px;
@@ -1483,6 +1608,7 @@ body {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 
 
 

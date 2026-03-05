@@ -7,6 +7,7 @@ const Controller = {
   calYear: new Date().getFullYear(),
   calMonth: new Date().getMonth(),
   calendarExpanded: false,
+  lofiPlaying: false,
 
   // ── Initialisierung ──
 
@@ -14,6 +15,7 @@ const Controller = {
     this._initTheme();
     this._initClock();
     this._initWeather();
+    this._initLofi();
     this._initStudienplan();
     this._initCalendarExpand();
     this._bindTodoEvents();
@@ -66,6 +68,41 @@ const Controller = {
   _initClock() {
     View.updateClock();
     setInterval(() => View.updateClock(), 1000);
+  },
+
+  // ── Lofi Player ──
+
+  _initLofi() {
+    var self = this;
+    var btn = View.el('lofiBtn');
+    var label = View.el('lofiLabel');
+    var wrap = View.el('lofiIframeWrap');
+
+    btn.addEventListener('click', function() {
+      if (self.lofiPlaying) {
+        // Stop
+        wrap.innerHTML = '';
+        btn.classList.remove('lofi-playing');
+        label.textContent = 'LOFI';
+        label.style.color = '';
+        self.lofiPlaying = false;
+      } else {
+        // Play — YouTube embed mit autoplay
+        var iframe = document.createElement('iframe');
+        iframe.src = 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=0&enablejsapi=1';
+        iframe.allow = 'autoplay; encrypted-media';
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.setAttribute('frameborder', '0');
+        iframe.width = '1';
+        iframe.height = '1';
+        wrap.innerHTML = '';
+        wrap.appendChild(iframe);
+        btn.classList.add('lofi-playing');
+        label.textContent = 'LIVE';
+        label.style.color = 'var(--calendar-selected)';
+        self.lofiPlaying = true;
+      }
+    });
   },
 
   // ── Wetter ──
@@ -391,6 +428,8 @@ const Controller = {
     });
   },
 };
+
+
 
 
 

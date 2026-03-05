@@ -1,15 +1,16 @@
-# Habit Tracker
+# Anti Procrastinator
 
-Eine minimalistische Habit-Tracker Web-App im Notion-Stil mit MVC-Architektur.
+Eine minimalistische Produktivitaets-Web-App im Notion-Stil mit MVC-Architektur.
 
 ## Features
 
 - Echtzeituhr (Europe/Berlin Zeitzone)
-- Wetter-Widget mit automatischer Standorterkennung via IP
+- Wetter-Widget mit Standorterkennung (Open-Meteo API)
 - To-Do Liste mit Kategorien, Datumszuweisung und Story Points
 - Interaktiver Monatskalender mit Task-Indikatoren
 - Fortschritts-Diagramme (Abschlussrate + Story Points, Kategorieverteilung)
 - Statistik-Karten (Gesamt, Erledigt, Offen, Rate, Punkte)
+- Studienplan Informatik B.Sc. mit Notenerfassung und Durchschnittsberechnung
 - Dark/Light Mode
 - Lokale Datenspeicherung (localStorage)
 - Responsive Design
@@ -35,5 +36,4 @@ open index.html
 - HTML / CSS / JavaScript (kein Build-Tool)
 - Chart.js (CDN)
 - Inter Font (Google Fonts)
-- wttr.in (Wetter-API, kein Key noetig)
-- ipapi.co (IP-basierte Standorterkennung)
+- Open-Meteo (Wetter-API, kein Key noetig)

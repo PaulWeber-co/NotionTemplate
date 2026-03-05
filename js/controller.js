@@ -13,6 +13,7 @@ const Controller = {
     this._initTheme();
     this._initClock();
     this._initWeather();
+    this._initStudienplan();
     this._bindTodoEvents();
     this._bindFilterEvents();
     this._bindCalendarNav();
@@ -261,6 +262,67 @@ const Controller = {
   _setDefaultDate() {
     View.el('todoDate').value = Model.todayStr();
   },
+
+  // ── Studienplan ──
+
+  _initStudienplan() {
+    var self = this;
+
+    View.el('studienplanBtn').addEventListener('click', function() {
+      self._renderStudienplan();
+      View.showStudienplan();
+    });
+
+    View.el('studienplanClose').addEventListener('click', function() {
+      View.hideStudienplan();
+    });
+
+    View.el('studienplanOverlay').addEventListener('click', function(e) {
+      if (e.target === View.el('studienplanOverlay')) {
+        View.hideStudienplan();
+      }
+    });
+  },
+
+  _renderStudienplan() {
+    var self = this;
+    var grades = Model.getGrades();
+    View.renderStudienplan(Model.STUDIENPLAN, grades);
+    View.renderStudienplanStats(Model.getStudienplanStats());
+
+    document.querySelectorAll('.sp-grade-input').forEach(function(input) {
+      input.addEventListener('change', function() {
+        var moduleId = input.dataset.module;
+        var selectEl = document.querySelector('.sp-status-select[data-module="' + moduleId + '"]');
+        var status = selectEl ? selectEl.value : 'offen';
+        Model.saveGrade(moduleId, input.value, status);
+        View.renderStudienplanStats(Model.getStudienplanStats());
+        self._updateStatusClasses();
+      });
+    });
+
+    document.querySelectorAll('.sp-status-select').forEach(function(select) {
+      select.addEventListener('change', function() {
+        var moduleId = select.dataset.module;
+        var gradeInput = document.querySelector('.sp-grade-input[data-module="' + moduleId + '"]');
+        var grade = gradeInput ? gradeInput.value : '';
+        Model.saveGrade(moduleId, grade, select.value);
+        View.renderStudienplanStats(Model.getStudienplanStats());
+        self._updateStatusClasses();
+      });
+    });
+  },
+
+  _updateStatusClasses() {
+    document.querySelectorAll('.sp-status-select').forEach(function(select) {
+      select.classList.remove('sp-status-offen', 'sp-status-bestanden', 'sp-status-nb');
+      if (select.value === 'bestanden') select.classList.add('sp-status-bestanden');
+      else if (select.value === 'nicht-bestanden') select.classList.add('sp-status-nb');
+      else select.classList.add('sp-status-offen');
+    });
+  },
 };
+
+
 
 

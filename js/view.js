@@ -385,6 +385,76 @@ const View = {
     div.textContent = text;
     return div.innerHTML;
   },
+
+  // ── Studienplan ──
+
+  renderStudienplan(semesters, grades) {
+    const body = this.el('studienplanBody');
+    let html = '';
+
+    semesters.forEach(function(sem) {
+      html += '<div class="sp-semester">';
+      html += '<div class="sp-semester-title">' + sem.semester + '. Semester</div>';
+      html += '<table class="sp-table">';
+      html += '<thead><tr>'
+        + '<th class="sp-th-name">Modul</th>'
+        + '<th class="sp-th-ects">ECTS</th>'
+        + '<th class="sp-th-pruef">Pruefung</th>'
+        + '<th class="sp-th-wab">WAB</th>'
+        + '<th class="sp-th-note">Note</th>'
+        + '<th class="sp-th-status">Status</th>'
+        + '</tr></thead><tbody>';
+
+      sem.modules.forEach(function(mod) {
+        const entry = grades[mod.id] || {};
+        const gradeVal = entry.grade || '';
+        const status = entry.status || 'offen';
+
+        let statusClass = 'sp-status-offen';
+        if (status === 'bestanden') statusClass = 'sp-status-bestanden';
+        else if (status === 'nicht-bestanden') statusClass = 'sp-status-nb';
+
+        let nameExtra = '';
+        if (mod.wahloptionen) {
+          nameExtra = '<div class="sp-wahloptionen">' + mod.wahloptionen.join(' / ') + '</div>';
+        }
+
+        html += '<tr>'
+          + '<td class="sp-td-name">' + mod.name + nameExtra + '</td>'
+          + '<td class="sp-td-ects">' + mod.ects + '</td>'
+          + '<td class="sp-td-pruef">' + mod.pruefung + '</td>'
+          + '<td class="sp-td-wab">' + (mod.wab ? 'Ja' : '--') + '</td>'
+          + '<td class="sp-td-note"><input type="number" class="sp-grade-input" data-module="' + mod.id + '" value="' + gradeVal + '" min="1.0" max="5.0" step="0.1" placeholder="--"></td>'
+          + '<td class="sp-td-status"><select class="sp-status-select ' + statusClass + '" data-module="' + mod.id + '">'
+            + '<option value="offen"' + (status === 'offen' ? ' selected' : '') + '>Offen</option>'
+            + '<option value="bestanden"' + (status === 'bestanden' ? ' selected' : '') + '>Bestanden</option>'
+            + '<option value="nicht-bestanden"' + (status === 'nicht-bestanden' ? ' selected' : '') + '>Nicht best.</option>'
+          + '</select></td>'
+          + '</tr>';
+      });
+
+      html += '</tbody></table></div>';
+    });
+
+    body.innerHTML = html;
+  },
+
+  renderStudienplanStats(stats) {
+    this.el('spAverage').textContent = stats.gradedEcts > 0 ? stats.average.toFixed(2) : '--';
+    this.el('spEctsComplete').textContent = stats.completedEcts + ' / ' + stats.totalEcts;
+    this.el('studienplanSummary').textContent = stats.completedEcts + ' / ' + stats.totalEcts + ' ECTS';
+    const pct = stats.totalEcts > 0 ? Math.round((stats.completedEcts / stats.totalEcts) * 100) : 0;
+    this.el('spProgressFill').style.width = pct + '%';
+  },
+
+  showStudienplan() {
+    this.el('studienplanOverlay').classList.add('visible');
+  },
+
+  hideStudienplan() {
+    this.el('studienplanOverlay').classList.remove('visible');
+  },
 };
+
 
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Habit Tracker</title>
+  <title>Anti Procrastinator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
@@ -15,8 +15,8 @@
   <header class="header">
     <div class="header-left">
       <div class="logo">
-        <div class="logo-mark">H</div>
-        Habit Tracker
+        <div class="logo-mark">AP</div>
+        Anti Procrastinator
       </div>
       <div>
         <div class="clock" id="clock">--:--:--</div>
@@ -31,9 +31,37 @@
           <div class="weather-desc" id="weatherDesc">Laden...</div>
         </div>
       </div>
+      <button class="btn-header" id="studienplanBtn">Studienplan</button>
       <button class="theme-toggle" id="themeToggle">Dark</button>
     </div>
   </header>
+
+  <!-- ════════════ STUDIENPLAN MODAL ════════════ -->
+  <div class="modal-overlay" id="studienplanOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Studienplan Informatik B.Sc.</div>
+          <div class="modal-subtitle" id="studienplanSummary">0 / 180 ECTS</div>
+        </div>
+        <button class="modal-close" id="studienplanClose">x</button>
+      </div>
+      <div class="modal-body" id="studienplanBody"></div>
+      <div class="modal-footer">
+        <div class="sp-avg-row">
+          <span class="sp-avg-label">Gewichteter Notendurchschnitt</span>
+          <span class="sp-avg-value" id="spAverage">--</span>
+        </div>
+        <div class="sp-avg-row">
+          <span class="sp-avg-label">ECTS abgeschlossen</span>
+          <span class="sp-avg-value" id="spEctsComplete">0 / 180</span>
+        </div>
+        <div class="sp-progress-bar">
+          <div class="sp-progress-fill" id="spProgressFill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ════════════ MAIN ════════════ -->
   <div class="main">

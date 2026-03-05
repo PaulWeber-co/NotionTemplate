@@ -28,6 +28,8 @@
   --shadow-lg: none;
   --chart-grid: rgba(0,0,0,0.08);
   --calendar-today: rgba(10,10,10,0.08);
+  --calendar-selected: #d42020;
+  --calendar-selected-light: rgba(212,32,32,0.08);
   --dot-color: rgba(0,0,0,0.08);
   --dot-accent: rgba(0,0,0,0.18);
   --tag-arbeit: #0a0a0a;
@@ -38,6 +40,10 @@
   --tag-gesundheit-bg: rgba(50,50,50,0.07);
   --tag-lernen: #444;
   --tag-lernen-bg: rgba(70,70,70,0.07);
+  --donut-1: #d42020;
+  --donut-2: #0a0a0a;
+  --donut-3: #777777;
+  --donut-4: #c0c0c0;
 }
 
 [data-theme="dark"] {
@@ -64,6 +70,8 @@
   --shadow-lg: none;
   --chart-grid: rgba(255,255,255,0.06);
   --calendar-today: rgba(232,232,232,0.08);
+  --calendar-selected: #ff4444;
+  --calendar-selected-light: rgba(255,68,68,0.12);
   --dot-color: rgba(255,255,255,0.05);
   --dot-accent: rgba(255,255,255,0.12);
   --tag-arbeit: #e8e8e8;
@@ -74,6 +82,10 @@
   --tag-gesundheit-bg: rgba(200,200,200,0.08);
   --tag-lernen: #bbb;
   --tag-lernen-bg: rgba(190,190,190,0.08);
+  --donut-1: #ff4444;
+  --donut-2: #e8e8e8;
+  --donut-3: #888888;
+  --donut-4: #444444;
 }
 
 /* ═══════════════════ RESET & BASE ═══════════════════ */
@@ -706,9 +718,10 @@ body {
 }
 
 .calendar-day.selected {
-  background: var(--text);
-  color: var(--bg);
+  background: var(--calendar-selected);
+  color: #fff;
   font-weight: 700;
+  border-color: var(--calendar-selected);
 }
 
 .calendar-day.other-month {
@@ -735,6 +748,191 @@ body {
 .dot-gesundheit { background: var(--text); }
 .dot-lernen { background: var(--text-secondary); }
 .dot-default { background: var(--text-muted); }
+
+/* ═══════════════════ CALENDAR EXPAND ═══════════════════ */
+.card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px dotted var(--border-dashed);
+}
+
+.card-title-row .card-title {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.cal-expand-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.cal-expand-btn:hover {
+  background: var(--text);
+  border-color: var(--text);
+}
+
+.cal-expand-btn:hover .cal-expand-icon::before,
+.cal-expand-btn:hover .cal-expand-icon::after {
+  background: var(--bg);
+}
+
+.cal-expand-icon {
+  position: relative;
+  width: 12px;
+  height: 12px;
+}
+
+.cal-expand-icon::before,
+.cal-expand-icon::after {
+  content: '';
+  position: absolute;
+  background: var(--text-secondary);
+  transition: background 0.15s ease;
+}
+
+.cal-expand-icon::before {
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border: 1.5px solid var(--text-secondary);
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.cal-expand-icon::after {
+  bottom: 0;
+  right: 0;
+  width: 5px;
+  height: 5px;
+  border: 1.5px solid var(--text-secondary);
+  background: transparent;
+  box-sizing: border-box;
+}
+
+/* Expanded state */
+.main.calendar-expanded #todoCard {
+  display: none;
+}
+
+.main.calendar-expanded #calendarCard {
+  grid-column: 1 / -1;
+}
+
+.main.calendar-expanded .calendar-grid {
+  gap: 3px;
+}
+
+.main.calendar-expanded .calendar-day {
+  aspect-ratio: auto;
+  min-height: 80px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+}
+
+.main.calendar-expanded .calendar-day:hover {
+  border-color: var(--text-muted);
+}
+
+.main.calendar-expanded .calendar-day.today {
+  border-color: var(--text);
+}
+
+.main.calendar-expanded .calendar-day.selected {
+  border-color: var(--calendar-selected);
+  background: var(--calendar-selected-light);
+  color: var(--text);
+}
+
+.main.calendar-expanded .calendar-day.selected > span {
+  color: var(--calendar-selected);
+  font-weight: 700;
+}
+
+.main.calendar-expanded .calendar-day-header {
+  padding: 8px 0;
+}
+
+.main.calendar-expanded .calendar-dots {
+  display: none;
+}
+
+/* Task labels inside expanded days */
+.cal-task-list {
+  display: none;
+}
+
+.main.calendar-expanded .cal-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.cal-task {
+  font-size: 9px;
+  font-family: var(--font);
+  font-weight: 400;
+  line-height: 1.3;
+  padding: 2px 5px;
+  border-left: 2px solid var(--text-muted);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cal-task.cal-task-done {
+  text-decoration: line-through;
+  opacity: 0.4;
+}
+
+.cal-task-arbeit { border-left-color: var(--calendar-selected); }
+.cal-task-persoenlich { border-left-color: var(--text-secondary); }
+.cal-task-gesundheit { border-left-color: var(--text); }
+.cal-task-lernen { border-left-color: var(--text-muted); }
+
+.cal-task-more {
+  font-size: 8px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+  padding: 1px 5px;
+}
+
+/* Collapse icon when expanded */
+.main.calendar-expanded .cal-expand-icon::before {
+  width: 12px;
+  height: 1.5px;
+  border: none;
+  background: var(--text-secondary);
+  top: 5px;
+  left: 0;
+}
+
+.main.calendar-expanded .cal-expand-icon::after {
+  display: none;
+}
+
+.main.calendar-expanded .cal-expand-btn:hover .cal-expand-icon::before {
+  background: var(--bg);
+}
 
 /* ═══════════════════ CHARTS ═══════════════════ */
 .charts-row {
@@ -1285,4 +1483,8 @@ body {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
+
+
 

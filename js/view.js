@@ -166,6 +166,7 @@ const View = {
     el.appendChild(num);
 
     if (tasks.length > 0) {
+      // Dots für kompakte Ansicht
       const dots = document.createElement('div');
       dots.className = 'calendar-dots';
       const uniqueCats = [...new Set(tasks.map(t => t.category))].slice(0, 4);
@@ -175,6 +176,25 @@ const View = {
         dots.appendChild(dot);
       });
       el.appendChild(dots);
+
+      // Task-Liste für Expanded-Ansicht
+      const taskList = document.createElement('div');
+      taskList.className = 'cal-task-list';
+      const maxShow = 3;
+      tasks.slice(0, maxShow).forEach(t => {
+        const taskEl = document.createElement('div');
+        taskEl.className = 'cal-task cal-task-' + (t.category || 'default');
+        if (t.completed) taskEl.classList.add('cal-task-done');
+        taskEl.textContent = t.text;
+        taskList.appendChild(taskEl);
+      });
+      if (tasks.length > maxShow) {
+        const more = document.createElement('div');
+        more.className = 'cal-task-more';
+        more.textContent = '+' + (tasks.length - maxShow) + ' mehr';
+        taskList.appendChild(more);
+      }
+      el.appendChild(taskList);
     }
 
     return el;
@@ -302,11 +322,14 @@ const View = {
 
     const hasData = Object.values(categoryData).some(v => v > 0);
 
-    // Monochromatische Graustufen für Nothing-Design
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const donutColors = isDark
-      ? ['#e8e8e8', '#aaaaaa', '#666666', '#333333']
-      : ['#0a0a0a', '#555555', '#999999', '#cccccc'];
+    // Farben aus CSS-Variablen
+    const s = getComputedStyle(document.documentElement);
+    const donutColors = [
+      s.getPropertyValue('--donut-1').trim(),
+      s.getPropertyValue('--donut-2').trim(),
+      s.getPropertyValue('--donut-3').trim(),
+      s.getPropertyValue('--donut-4').trim(),
+    ];
 
     this.charts.donut = new Chart(ctx, {
       type: 'doughnut',
@@ -506,6 +529,8 @@ const View = {
     this.el('studienplanOverlay').classList.remove('visible');
   },
 };
+
+
 
 
 

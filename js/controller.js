@@ -6,6 +6,7 @@ const Controller = {
   selectedDate: null,
   calYear: new Date().getFullYear(),
   calMonth: new Date().getMonth(),
+  calendarExpanded: false,
 
   // ── Initialisierung ──
 
@@ -14,6 +15,7 @@ const Controller = {
     this._initClock();
     this._initWeather();
     this._initStudienplan();
+    this._initCalendarExpand();
     this._bindTodoEvents();
     this._bindFilterEvents();
     this._bindCalendarNav();
@@ -212,6 +214,22 @@ const Controller = {
     });
   },
 
+  // ── Kalender Expand ──
+
+  _initCalendarExpand() {
+    var self = this;
+    View.el('calExpandBtn').addEventListener('click', function() {
+      self.calendarExpanded = !self.calendarExpanded;
+      var mainEl = document.querySelector('.main');
+      if (self.calendarExpanded) {
+        mainEl.classList.add('calendar-expanded');
+      } else {
+        mainEl.classList.remove('calendar-expanded');
+      }
+      self._renderCalendar();
+    });
+  },
+
   // ── Kalender Navigation ──
 
   _bindCalendarNav() {
@@ -373,6 +391,8 @@ const Controller = {
     });
   },
 };
+
+
 
 
 

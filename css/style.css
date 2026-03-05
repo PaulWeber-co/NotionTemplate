@@ -935,13 +935,12 @@ body {
   background: var(--bg-card);
 }
 
-.sp-th-name { width: 22%; }
-.sp-th-prof { width: 16%; }
-.sp-th-ects { width: 6%; text-align: center !important; }
+.sp-th-name { width: 28%; }
+.sp-th-prof { width: 18%; }
+.sp-th-ects { width: 7%; text-align: center !important; }
 .sp-th-pruef { width: 22%; }
-.sp-th-wab { width: 5%; text-align: center !important; }
 .sp-th-note { width: 12%; text-align: center !important; }
-.sp-th-status { width: 14%; }
+.sp-th-status { width: 13%; }
 
 .sp-module-row {
   transition: opacity 0.2s ease;
@@ -953,6 +952,34 @@ body {
 
 .sp-row-done:hover {
   opacity: 0.85;
+}
+
+.sp-row-wab {
+  background: var(--bg-input);
+}
+
+.sp-row-wab .sp-td-name {
+  padding-left: 24px;
+}
+
+.sp-wab-label {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--purple);
+  background: var(--purple-light);
+  padding: 1px 6px;
+  border-radius: 3px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.sp-name-wab {
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--text-secondary);
 }
 
 .sp-table tbody td {
@@ -1016,11 +1043,6 @@ body {
 .sp-td-prof {
   color: var(--text-secondary);
   font-size: 11px;
-}
-
-.sp-td-wab {
-  text-align: center;
-  color: var(--text-muted);
 }
 
 .sp-td-note {
@@ -1132,6 +1154,9 @@ body {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
+
 
 
 

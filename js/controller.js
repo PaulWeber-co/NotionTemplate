@@ -53,7 +53,7 @@ const Controller = {
       const next = current === 'light' ? 'dark' : 'light';
       Model.setTheme(next);
       View.applyTheme(next);
-      // Charts muessen nach Theme-Wechsel neu gerendert werden
+      // Charts müssen nach Theme-Wechsel neu gerendert werden
       View.renderLineChart(Model.getWeeklyData());
       View.renderDonutChart(Model.getCategoryData());
     });
@@ -70,8 +70,8 @@ const Controller = {
 
   WMO_DESCRIPTIONS: {
     0: 'Klar',
-    1: 'Ueberwiegend klar',
-    2: 'Teilweise bewoelkt',
+    1: 'Überwiegend klar',
+    2: 'Teilweise bewölkt',
     3: 'Bedeckt',
     45: 'Nebel',
     48: 'Nebel mit Reif',
@@ -153,7 +153,7 @@ const Controller = {
           { timeout: 5000 }
         );
       } else {
-        // Kein Geolocation verfuegbar — Fallback Berlin
+        // Kein Geolocation verfügbar — Fallback Berlin
         resolve({ lat: 52.52, lon: 13.41, city: 'Berlin' });
       }
     });
@@ -373,6 +373,9 @@ const Controller = {
     });
   },
 };
+
+
+
 
 
 

@@ -4,7 +4,7 @@
 const View = {
   CATEGORIES: {
     arbeit: 'Arbeit',
-    persoenlich: 'Persoenlich',
+    persoenlich: 'Persönlich',
     gesundheit: 'Gesundheit',
     lernen: 'Lernen',
   },
@@ -17,7 +17,7 @@ const View = {
   },
 
   MONTH_NAMES: [
-    'Januar', 'Februar', 'Maerz', 'April', 'Mai', 'Juni',
+    'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
     'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember',
   ],
 
@@ -46,7 +46,7 @@ const View = {
   displayWeather(data) {
     if (!data) {
       this.el('weatherTemp').textContent = '--';
-      this.el('weatherDesc').textContent = 'Nicht verfuegbar';
+      this.el('weatherDesc').textContent = 'Nicht verfügbar';
       this.el('weatherIcon').textContent = '--';
       return;
     }
@@ -79,7 +79,7 @@ const View = {
 
     if (todos.length === 0) {
       ul.innerHTML = '<div class="todo-empty"><div class="todo-empty-icon">--</div>Keine Aufgaben' +
-        (selectedDate ? ' fuer diesen Tag' : '') + '</div>';
+        (selectedDate ? ' für diesen Tag' : '') + '</div>';
       return;
     }
 
@@ -145,7 +145,7 @@ const View = {
       grid.appendChild(this._createDayEl(d, false, dateStr, tasks, dateStr === todayStr, dateStr === selectedDate));
     }
 
-    // Naechster Monat
+    // Nächster Monat
     const totalCells = startWeekday + daysInMonth;
     const remaining = (7 - (totalCells % 7)) % 7;
     for (let i = 1; i <= remaining; i++) {
@@ -305,7 +305,7 @@ const View = {
     this.charts.donut = new Chart(ctx, {
       type: 'doughnut',
       data: {
-        labels: ['Arbeit', 'Persoenlich', 'Gesundheit', 'Lernen'],
+        labels: ['Arbeit', 'Persönlich', 'Gesundheit', 'Lernen'],
         datasets: [{
           data: hasData ? Object.values(categoryData) : [1, 1, 1, 1],
           backgroundColor: [colors.accent, colors.purple, colors.green, colors.orange],
@@ -434,8 +434,7 @@ const View = {
         + '<th class="sp-th-name">Modul</th>'
         + '<th class="sp-th-prof">Verantwortlich</th>'
         + '<th class="sp-th-ects">ECTS</th>'
-        + '<th class="sp-th-pruef">Pruefung</th>'
-        + '<th class="sp-th-wab">WAB</th>'
+        + '<th class="sp-th-pruef">Prüfung</th>'
         + '<th class="sp-th-note">Note</th>'
         + '<th class="sp-th-status">Status</th>'
         + '</tr></thead><tbody>';
@@ -447,25 +446,27 @@ const View = {
         var customModName = Model.getModuleName(mod);
         var customProfName = Model.getProfName(mod);
 
-        var statusClass = 'sp-status-offen';
-        if (status === 'bestanden') statusClass = 'sp-status-bestanden';
-        else if (status === 'nicht-bestanden') statusClass = 'sp-status-nb';
+        var statusCls = 'sp-status-offen';
+        if (status === 'bestanden') statusCls = 'sp-status-bestanden';
+        else if (status === 'nicht-bestanden') statusCls = 'sp-status-nb';
 
         var rowClass = status === 'bestanden' ? ' sp-row-done' : '';
+        var wabClass = mod.isWab ? ' sp-row-wab' : '';
 
         var nameExtra = '';
         if (mod.wahloptionen) {
           nameExtra = '<div class="sp-wahloptionen">' + mod.wahloptionen.join(' / ') + '</div>';
         }
 
-        html += '<tr class="sp-module-row' + rowClass + '">'
-          + '<td class="sp-td-name"><input type="text" class="sp-name-input" data-name-key="name_' + mod.id + '" value="' + self._escapeAttr(customModName) + '">' + nameExtra + '</td>'
+        var wabLabel = mod.isWab ? '<span class="sp-wab-label">WAB</span>' : '';
+
+        html += '<tr class="sp-module-row' + rowClass + wabClass + '">'
+          + '<td class="sp-td-name">' + wabLabel + '<input type="text" class="sp-name-input' + (mod.isWab ? ' sp-name-wab' : '') + '" data-name-key="name_' + mod.id + '" value="' + self._escapeAttr(customModName) + '">' + nameExtra + '</td>'
           + '<td class="sp-td-prof"><input type="text" class="sp-prof-input" data-name-key="prof_' + mod.id + '" value="' + self._escapeAttr(customProfName) + '" placeholder="--"></td>'
           + '<td class="sp-td-ects">' + mod.ects + '</td>'
           + '<td class="sp-td-pruef">' + mod.pruefung + '</td>'
-          + '<td class="sp-td-wab">' + (mod.wab ? 'Ja' : '--') + '</td>'
           + '<td class="sp-td-note"><input type="number" class="sp-grade-input" data-module="' + mod.id + '" value="' + gradeVal + '" min="1.0" max="5.0" step="0.1" placeholder="--"></td>'
-          + '<td class="sp-td-status"><select class="sp-status-select ' + statusClass + '" data-module="' + mod.id + '">'
+          + '<td class="sp-td-status"><select class="sp-status-select ' + statusCls + '" data-module="' + mod.id + '">'
             + '<option value="offen"' + (status === 'offen' ? ' selected' : '') + '>Offen</option>'
             + '<option value="bestanden"' + (status === 'bestanden' ? ' selected' : '') + '>Bestanden</option>'
             + '<option value="nicht-bestanden"' + (status === 'nicht-bestanden' ? ' selected' : '') + '>Nicht best.</option>'
@@ -499,6 +500,13 @@ const View = {
     this.el('studienplanOverlay').classList.remove('visible');
   },
 };
+
+
+
+
+
+
+
 
 
 

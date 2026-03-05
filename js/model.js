@@ -179,10 +179,11 @@ const Model = {
       semester: 1,
       modules: [
         { id: 's1_mathe1', name: 'Mathematik 1', ects: 5, pruefung: '90-min Klausur', wab: false, verantwortlich: 'Prof. Dr. Volker Scheidemann' },
-        { id: 's1_lerntechniken', name: 'Lerntechniken und wissenschaftliches Arbeiten', ects: 5, pruefung: 'Klausur (70%) + Gruppenpraesentation (30%)', wab: false, verantwortlich: 'Prof. Dr. Marcus Frenz' },
+        { id: 's1_lerntechniken', name: 'Lerntechniken und wissenschaftliches Arbeiten', ects: 5, pruefung: 'Klausur (70%) + Gruppenpräsentation (30%)', wab: false, verantwortlich: 'Prof. Dr. Marcus Frenz' },
         { id: 's1_gdi', name: 'Grundlagen der Informatik', ects: 5, pruefung: 'Klausur', wab: false },
-        { id: 's1_prog', name: 'Programmierung mit WAB', ects: 10, pruefung: 'Klausur + WAB Praesentation/Kolloquium', wab: true },
-        { id: 's1_english', name: 'Business English', ects: 5, pruefung: 'Klausur / muendliche Pruefung', wab: false },
+        { id: 's1_prog', name: 'Programmierung', ects: 5, pruefung: 'Klausur', wab: false },
+        { id: 's1_prog_wab', name: 'Programmierung WAB', ects: 5, pruefung: 'Präsentation/Kolloquium', wab: false, isWab: true, parentId: 's1_prog' },
+        { id: 's1_english', name: 'Business English', ects: 5, pruefung: 'Klausur / mündliche Prüfung', wab: false },
       ],
     },
     {
@@ -190,45 +191,49 @@ const Model = {
       modules: [
         { id: 's2_mathe2', name: 'Mathematik 2', ects: 5, pruefung: 'Klausur', wab: false },
         { id: 's2_theo', name: 'Theoretische Informatik', ects: 5, pruefung: 'Klausur', wab: false },
-        { id: 's2_algo', name: 'Algorithmen und Datenstrukturen mit WAB', ects: 10, pruefung: 'Klausur + WAB Kolloquium', wab: true },
+        { id: 's2_algo', name: 'Algorithmen und Datenstrukturen', ects: 5, pruefung: 'Klausur', wab: false },
+        { id: 's2_algo_wab', name: 'Algorithmen und Datenstrukturen WAB', ects: 5, pruefung: 'WAB Kolloquium', wab: false, isWab: true, parentId: 's2_algo' },
         { id: 's2_fortprog', name: 'Fortgeschrittene Programmierung', ects: 5, pruefung: 'Klausur / Programmierprojekt', wab: false },
-        { id: 's2_komm', name: 'Kommunikationskompetenz', ects: 5, pruefung: 'Praesentation / Projektarbeit', wab: false },
+        { id: 's2_komm', name: 'Kommunikationskompetenz', ects: 5, pruefung: 'Präsentation / Projektarbeit', wab: false },
       ],
     },
     {
       semester: 3,
       modules: [
         { id: 's3_infosec', name: 'Informationssicherheit', ects: 5, pruefung: 'Klausur', wab: false },
-        { id: 's3_datenbank', name: 'Datenmodellierung und Datenbanken mit WAB', ects: 10, pruefung: 'Klausur + WAB Kolloquium', wab: true },
+        { id: 's3_datenbank', name: 'Datenmodellierung und Datenbanken', ects: 5, pruefung: 'Klausur', wab: false },
+        { id: 's3_datenbank_wab', name: 'Datenmodellierung und Datenbanken WAB', ects: 5, pruefung: 'WAB Kolloquium', wab: false, isWab: true, parentId: 's3_datenbank' },
         { id: 's3_netze', name: 'Netze und Verteilte Systeme', ects: 5, pruefung: 'Klausur', wab: false },
         { id: 's3_bs', name: 'Betriebssysteme', ects: 5, pruefung: 'Klausur', wab: false },
-        { id: 's3_pm', name: 'Projektmanagement', ects: 5, pruefung: 'Projektarbeit / Praesentation', wab: false },
+        { id: 's3_pm', name: 'Projektmanagement', ects: 5, pruefung: 'Projektarbeit / Präsentation', wab: false },
       ],
     },
     {
       semester: 4,
       modules: [
-        { id: 's4_sweng', name: 'Agiles Software-Engineering und Softwaretechnik mit WAB', ects: 10, pruefung: 'Projekt + WAB Kolloquium', wab: true },
+        { id: 's4_sweng', name: 'Agiles Software-Engineering und Softwaretechnik', ects: 5, pruefung: 'Projekt', wab: false },
+        { id: 's4_sweng_wab', name: 'Agiles Software-Engineering WAB', ects: 5, pruefung: 'WAB Kolloquium', wab: false, isWab: true, parentId: 's4_sweng' },
         { id: 's4_techinfo', name: 'Technische Informatik und Rechnerarchitekturen / XaaS', ects: 5, pruefung: 'Klausur', wab: false },
-        { id: 's4_hci', name: 'Human-Computer-Interaction', ects: 5, pruefung: 'Projekt / Praesentation', wab: false },
+        { id: 's4_hci', name: 'Human-Computer-Interaction', ects: 5, pruefung: 'Projekt / Präsentation', wab: false },
         { id: 's4_data', name: 'Data Analytics und Big Data', ects: 5, pruefung: 'Klausur / Projekt', wab: false },
-        { id: 's4_interkult', name: 'Interkulturelle Kompetenz und heterogene Teams', ects: 5, pruefung: 'Praesentation / Gruppenarbeit', wab: false },
+        { id: 's4_interkult', name: 'Interkulturelle Kompetenz und heterogene Teams', ects: 5, pruefung: 'Präsentation / Gruppenarbeit', wab: false },
       ],
     },
     {
       semester: 5,
       modules: [
-        { id: 's5_projekt', name: 'Projektpraktikum mit WAB', ects: 10, pruefung: 'Projekt + Kolloquium', wab: true },
+        { id: 's5_projekt', name: 'Projektpraktikum', ects: 5, pruefung: 'Projekt', wab: false },
+        { id: 's5_projekt_wab', name: 'Projektpraktikum WAB', ects: 5, pruefung: 'Kolloquium', wab: false, isWab: true, parentId: 's5_projekt' },
         { id: 's5_microservice', name: 'Software-Anwendungsarchitekturen und Microservice APIs', ects: 5, pruefung: 'Projekt / Klausur', wab: false },
         { id: 's5_ml', name: 'Maschinelles Lernen und Artificial Intelligence', ects: 5, pruefung: 'Klausur / Projekt', wab: false },
         { id: 's5_bwl', name: 'Betriebswirtschaftslehre und IT-Service-Management', ects: 5, pruefung: 'Klausur', wab: false },
-        { id: 's5_wpf1', name: 'Wahlpflichtfach 1', ects: 5, pruefung: 'Klausur / Projekt', wab: false, wahloptionen: ['Mobile Anwendungen', 'Technikfolgenabschaetzung', 'Privacy Enhancement Technologies'] },
+        { id: 's5_wpf1', name: 'Wahlpflichtfach 1', ects: 5, pruefung: 'Klausur / Projekt', wab: false, wahloptionen: ['Mobile Anwendungen', 'Technikfolgenabschätzung', 'Privacy Enhancement Technologies'] },
       ],
     },
     {
       semester: 6,
       modules: [
-        { id: 's6_trends', name: 'New Trends in IT und Management der Digitalen Transformation', ects: 5, pruefung: 'Projekt / Praesentation', wab: false },
+        { id: 's6_trends', name: 'New Trends in IT und Management der Digitalen Transformation', ects: 5, pruefung: 'Projekt / Präsentation', wab: false },
         { id: 's6_recht', name: 'Recht und Datenschutz', ects: 5, pruefung: 'Klausur', wab: false },
         { id: 's6_thesis', name: 'Bachelor Thesis', ects: 12, pruefung: 'Abschlussarbeit', wab: false },
         { id: 's6_kolloq', name: 'Bachelor-Thesis Kolloquium', ects: 3, pruefung: 'Verteidigung', wab: false },
@@ -340,6 +345,7 @@ const Model = {
     return gradedEcts > 0 ? (weightedSum / gradedEcts) : null;
   },
 };
+
 
 
 

@@ -234,7 +234,7 @@ const View = {
             align: 'end',
             labels: {
               color: colors.textSecondary,
-              font: { family: 'Inter', size: 11 },
+              font: { family: 'Space Mono, monospace', size: 10 },
               boxWidth: 12,
               boxHeight: 2,
               padding: 12,
@@ -247,8 +247,8 @@ const View = {
             bodyColor: colors.textSecondary,
             borderColor: colors.border,
             borderWidth: 1,
-            titleFont: { family: 'Inter', weight: '600' },
-            bodyFont: { family: 'Inter' },
+            titleFont: { family: 'Space Mono, monospace', weight: '600' },
+            bodyFont: { family: 'Space Grotesk, sans-serif' },
             padding: 10,
             callbacks: {
               label: function(context) {
@@ -265,7 +265,7 @@ const View = {
             position: 'left',
             ticks: {
               color: colors.textSecondary,
-              font: { family: 'Inter', size: 10 },
+              font: { family: 'Space Mono, monospace', size: 10 },
               callback: function(v) { return v + '%'; },
               stepSize: 25,
             },
@@ -277,7 +277,7 @@ const View = {
             position: 'right',
             ticks: {
               color: colors.textSecondary,
-              font: { family: 'Inter', size: 10 },
+              font: { family: 'Space Mono, monospace', size: 10 },
               callback: function(v) { return v + 'pt'; },
               stepSize: 1,
             },
@@ -285,7 +285,7 @@ const View = {
             border: { display: false },
           },
           x: {
-            ticks: { color: colors.textSecondary, font: { family: 'Inter', size: 10 } },
+            ticks: { color: colors.textSecondary, font: { family: 'Space Mono, monospace', size: 10 } },
             grid: { display: false },
             border: { display: false },
           },
@@ -302,13 +302,19 @@ const View = {
 
     const hasData = Object.values(categoryData).some(v => v > 0);
 
+    // Monochromatische Graustufen für Nothing-Design
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const donutColors = isDark
+      ? ['#e8e8e8', '#aaaaaa', '#666666', '#333333']
+      : ['#0a0a0a', '#555555', '#999999', '#cccccc'];
+
     this.charts.donut = new Chart(ctx, {
       type: 'doughnut',
       data: {
         labels: ['Arbeit', 'Persönlich', 'Gesundheit', 'Lernen'],
         datasets: [{
           data: hasData ? Object.values(categoryData) : [1, 1, 1, 1],
-          backgroundColor: [colors.accent, colors.purple, colors.green, colors.orange],
+          backgroundColor: donutColors,
           borderWidth: 0,
           hoverOffset: 6,
         }],
@@ -322,7 +328,7 @@ const View = {
             position: 'bottom',
             labels: {
               color: colors.textSecondary,
-              font: { family: 'Inter', size: 11 },
+              font: { family: 'Space Mono, monospace', size: 10 },
               padding: 16,
               usePointStyle: true,
               pointStyleWidth: 8,
@@ -334,8 +340,8 @@ const View = {
             bodyColor: colors.textSecondary,
             borderColor: colors.border,
             borderWidth: 1,
-            titleFont: { family: 'Inter', weight: '600' },
-            bodyFont: { family: 'Inter' },
+            titleFont: { family: 'Space Mono, monospace', weight: '600' },
+            bodyFont: { family: 'Space Grotesk, sans-serif' },
             padding: 10,
             callbacks: {
               label: function(context) {
@@ -500,6 +506,9 @@ const View = {
     this.el('studienplanOverlay').classList.remove('visible');
   },
 };
+
+
+
 
 
 

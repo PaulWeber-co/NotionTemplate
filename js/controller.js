@@ -7,7 +7,6 @@ const Controller = {
   calYear: new Date().getFullYear(),
   calMonth: new Date().getMonth(),
   calendarExpanded: false,
-  lofiPlaying: false,
   chartRange: 'week',
 
   // ── Initialisierung ──
@@ -16,7 +15,6 @@ const Controller = {
     this._initTheme();
     this._initClock();
     this._initWeather();
-    this._initLofi();
     this._initStudienplan();
     this._initCalendarExpand();
     this._initChartRange();
@@ -75,73 +73,6 @@ const Controller = {
 
   // ── Lofi Player ──
 
-  lofiWindow: null,
-
-  _initLofi() {
-    var self = this;
-    var btn = View.el('lofiBtn');
-    var label = View.el('lofiLabel');
-
-    btn.addEventListener('click', function() {
-      if (self.lofiPlaying) {
-        // Stop
-        self._stopLofi();
-        btn.classList.remove('lofi-playing');
-        label.textContent = 'LOFI';
-        label.classList.remove('lofi-label-active');
-        self.lofiPlaying = false;
-      } else {
-        // Play — offscreen mini-window mit YouTube
-        self._startLofi();
-        btn.classList.add('lofi-playing');
-        label.textContent = 'LIVE';
-        label.classList.add('lofi-label-active');
-        self.lofiPlaying = true;
-      }
-    });
-  },
-
-  _startLofi() {
-    var self = this;
-    var ytUrl = 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&loop=1&playlist=jfKfPfyJRdk';
-    try {
-      if (typeof chrome !== 'undefined' && chrome.windows && chrome.windows.create) {
-        chrome.windows.create({
-          url: ytUrl,
-          type: 'popup',
-          width: 400,
-          height: 300,
-          left: screen.width - 420,
-          top: screen.height - 340,
-          focused: false
-        }, function(win) {
-          if (chrome.runtime.lastError) {
-            console.warn('Lofi window error:', chrome.runtime.lastError.message);
-            return;
-          }
-          if (win) self.lofiWindow = win.id;
-        });
-      } else {
-        self.lofiWindow = window.open(ytUrl, 'lofi', 'width=400,height=300,left=' + (screen.width - 420) + ',top=' + (screen.height - 340));
-      }
-    } catch (e) {
-      console.warn('Lofi start failed:', e);
-    }
-  },
-
-  _stopLofi() {
-    if (!this.lofiWindow) return;
-    try {
-      if (typeof chrome !== 'undefined' && chrome.windows && chrome.windows.remove) {
-        chrome.windows.remove(this.lofiWindow, function() {
-          if (chrome.runtime.lastError) { /* Window already closed */ }
-        });
-      } else if (this.lofiWindow && typeof this.lofiWindow.close === 'function') {
-        this.lofiWindow.close();
-      }
-    } catch (e) { /* already closed */ }
-    this.lofiWindow = null;
-  },
 
   // ── Wetter ──
 
@@ -766,6 +697,9 @@ const Controller = {
     });
   },
 };
+
+
+
 
 
 

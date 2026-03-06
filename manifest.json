@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Anti Procrastinator",
-  "version": "1.0.3",
-  "description": "Dein persönlicher Produktivitäts-Hub — To-Do, Kalender, Studienplan, Lofi Music.",
+  "version": "1.2.0",
+  "description": "Dein persönlicher Produktivitäts-Hub — To-Do, Kalender, Studienplan.",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
@@ -34,6 +34,10 @@
     "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;"
   }
 }
+
+
+
+
 
 
 

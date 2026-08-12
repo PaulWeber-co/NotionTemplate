@@ -1,0 +1,11 @@
+# Editoren
+.idea/
+.vscode/
+*.swp
+
+# Betriebssystem
+.DS_Store
+Thumbs.db
+
+# Nichts zu bauen — falls doch mal jemand npm anwirft
+node_modules/

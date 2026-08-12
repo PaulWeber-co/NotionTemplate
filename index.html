@@ -1,352 +1,40 @@
 <!DOCTYPE html>
-<html lang="de" data-theme="light">
+<html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
   <title>Anti Procrastinator</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="description" content="Notentracker, Prüfungstermine, Aufgaben und Fokuszeit für Studium und Schule — offline nutzbar, ohne Konto.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f2f2f7">
+
+  <!-- Als App auf dem Home-Bildschirm -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Anti Procrastinator">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/icon-180.png">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/icon-192.png" sizes="192x192">
+
+  <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-
-  <!-- ════════════ TOOLBAR ════════════ -->
-  <div class="toolbar">
-    <div class="toolbar-left">
-      <div class="logo">
-        <div class="logo-mark">AP</div>
-        Anti Procrastinator
-      </div>
-    </div>
-    <div class="toolbar-right">
-      <button class="btn-toolbar" id="studienplanBtn">Planer</button>
-      <button class="btn-toolbar theme-toggle" id="themeToggle">Dark</button>
-    </div>
+  <div id="shell">
+    <main id="app" aria-live="polite"></main>
   </div>
 
-  <!-- ════════════ PLANER MODAL ════════════ -->
-  <div class="modal-overlay" id="studienplanOverlay">
-    <div class="modal planer-modal">
-      <div class="modal-header">
-        <div>
-          <div class="modal-title" id="planerTitle">Planer</div>
-          <div class="modal-subtitle" id="studienplanSummary"></div>
-        </div>
-        <button class="modal-close" id="studienplanClose">✕</button>
-      </div>
+  <!-- Einrichtungsassistent -->
+  <div id="onboard" hidden></div>
 
-      <!-- Mode Select -->
-      <div class="planer-mode-select" id="planerModeSelect">
-        <div class="planer-mode-title">Wähle deinen Planer</div>
-        <div class="planer-mode-grid">
-          <button class="planer-mode-btn" data-mode="schule">
-            <div class="planer-mode-icon-wrap"><span class="planer-mode-icon">.:S:.</span></div>
-            <span class="planer-mode-label">Schule</span>
-            <span class="planer-mode-desc">Klassen 5–13 · Eigene Fächer eintragen · Noten 1–6 (SA, Ex, Mündlich)</span>
-          </button>
-          <button class="planer-mode-btn" data-mode="bachelor">
-            <div class="planer-mode-icon-wrap"><span class="planer-mode-icon">.:B:.</span></div>
-            <span class="planer-mode-label">Bachelor</span>
-            <span class="planer-mode-desc">6 Semester · 180 ECTS · Module selbst eintragen · Noten 1.0–5.0</span>
-          </button>
-          <button class="planer-mode-btn" data-mode="master">
-            <div class="planer-mode-icon-wrap"><span class="planer-mode-icon">.:M:.</span></div>
-            <span class="planer-mode-label">Master</span>
-            <span class="planer-mode-desc">4 Semester · 120 ECTS · Module selbst eintragen · Noten 1.0–5.0</span>
-          </button>
-          <button class="planer-mode-btn" data-mode="provadis">
-            <div class="planer-mode-icon-wrap"><span class="planer-mode-icon">.:P:.</span></div>
-            <span class="planer-mode-label">Provadis</span>
-            <span class="planer-mode-desc">Informatik B.Sc. · Alle 6 Semester vorausgefüllt · 180 ECTS</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Tab Navigation -->
-      <div class="sp-tabs-wrap sync-hidden" id="spTabsWrap">
-        <div class="sp-stats-bar">
-          <div class="sp-stat-pill">
-            <span class="sp-stat-pill-label">Schnitt</span>
-            <span class="sp-stat-pill-value" id="spAverage">--</span>
-          </div>
-          <div class="sp-stat-pill">
-            <span class="sp-stat-pill-label" id="planerPointsLabel">ECTS</span>
-            <span class="sp-stat-pill-value" id="spEctsComplete">0/0</span>
-          </div>
-          <div class="sp-progress-bar-mini">
-            <div class="sp-progress-fill-mini" id="spProgressFill"></div>
-          </div>
-          <div class="sp-tabs-actions">
-            <button class="sp-action-btn" id="planerAddPeriod" title="Zeitraum hinzufügen">+</button>
-            <button class="sp-action-btn sp-action-danger" id="planerReset" title="Modus ändern">⟳</button>
-          </div>
-        </div>
-        <div class="sp-tabs" id="spTabs"></div>
-      </div>
-
-      <!-- Content Area -->
-      <div class="modal-body sync-hidden" id="studienplanBody"></div>
+  <noscript>
+    <div style="padding:40px 24px;text-align:center;font-family:system-ui">
+      <h1 style="font-size:22px">JavaScript wird benötigt</h1>
+      <p style="color:#666">Anti Procrastinator rechnet alles direkt im Browser — ohne JavaScript geht das nicht.</p>
     </div>
-  </div>
+  </noscript>
 
-  <!-- ════════════ CONFIRM MODAL ════════════ -->
-  <div class="modal-overlay sync-hidden" id="confirmOverlay">
-    <div class="modal confirm-modal">
-      <div class="confirm-text" id="confirmText">Bist du sicher?</div>
-      <div class="confirm-actions">
-        <button class="btn confirm-cancel" id="confirmCancel">Abbrechen</button>
-        <button class="btn confirm-ok" id="confirmOk">Bestätigen</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ════════════ KALENDER SYNC MODAL ════════════ -->
-  <div class="modal-overlay" id="calSyncOverlay">
-    <div class="modal cal-sync-modal">
-      <div class="modal-header">
-        <div>
-          <div class="modal-title">Kalender Synchronisation</div>
-          <div class="modal-subtitle">Apple / Google Kalender verbinden</div>
-        </div>
-        <button class="modal-close" id="calSyncClose">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="sync-section">
-          <div class="sync-section-title">Kalender-URL Abonnement</div>
-          <div class="sync-section-desc">Füge eine öffentliche .ics-URL ein. Die Termine werden automatisch alle 15 Minuten synchronisiert.</div>
-          <div class="sync-url-row">
-            <label for="syncUrlInput" class="sr-only">Kalender-URL</label>
-            <input type="text" class="sync-url-input" id="syncUrlInput" placeholder="https://calendar.google.com/...basic.ics" />
-            <button class="btn btn-primary" id="syncUrlSave">Verbinden</button>
-          </div>
-          <div class="sync-url-status" id="syncUrlStatus"></div>
-          <div class="sync-help">
-            <div class="sync-help-title">Wo finde ich die URL?</div>
-            <div class="sync-help-item"><strong>Apple iCloud:</strong> icloud.com/calendar → Kalender teilen → Öffentlicher Kalender → Link kopieren</div>
-            <div class="sync-help-item"><strong>Google Calendar:</strong> Einstellungen → Kalender → Integration → Geheime iCal-Adresse kopieren</div>
-            <div class="sync-help-item"><strong>Outlook:</strong> Einstellungen → Kalender veröffentlichen → ICS-Link kopieren</div>
-          </div>
-        </div>
-        <div class="sync-section">
-          <div class="sync-section-title">Datei importieren</div>
-          <div class="sync-section-desc">Exportiere deinen Kalender als .ics-Datei und lade sie hier hoch.</div>
-          <div class="sync-drop-zone" id="syncDropZone">
-            <div class="sync-drop-label">.ics-Datei hierher ziehen oder klicken</div>
-            <input type="file" id="calIcsFile" accept=".ics" class="sr-only" />
-          </div>
-        </div>
-        <div class="sync-section sync-hidden" id="syncEventsSection">
-          <div class="sync-section-title">Synchronisierte Termine</div>
-          <div class="sync-events-count" id="syncEventsCount"></div>
-          <button class="btn sync-clear-btn" id="syncClearBtn">Sync-Termine löschen</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ════════════ WIDGET CANVAS ════════════ -->
-  <div class="widget-canvas" id="widgetCanvas">
-
-    <!-- Clock Widget -->
-    <div class="widget" data-widget-id="clock">
-      <div class="widget-header">
-        <span class="widget-header-title">Uhr</span>
-        <button class="clock-toggle-btn" id="clockToggle" title="Analog / Digital">⟳</button>
-      </div>
-      <div class="widget-body widget-body-clock">
-        <div class="clock-digital" id="clockDigital">
-          <div class="clock" id="clock">--:--:--</div>
-          <div class="clock-date" id="clockDate">---</div>
-        </div>
-        <canvas class="clock-analog-canvas" id="analogClock"></canvas>
-      </div>
-    </div>
-
-    <!-- Weather Widget -->
-    <div class="widget widget-weather" data-widget-id="weather">
-      <div class="widget-header">
-        <span class="widget-header-title">Wetter</span>
-      </div>
-      <div class="widget-body">
-        <div class="weather-widget-inner">
-          <div class="weather-top">
-            <div class="weather-current">
-              <div class="weather-temp-big" id="weatherTempBig">--°</div>
-              <div class="weather-hi-lo">
-                <span id="weatherHi">H:--°</span>
-                <span id="weatherLo">L:--°</span>
-              </div>
-            </div>
-            <div class="weather-info">
-              <div class="weather-city" id="weatherCity">Laden...</div>
-              <div class="weather-desc" id="weatherDesc">--</div>
-            </div>
-          </div>
-          <div class="weather-forecast" id="weatherForecast"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Quote Widget -->
-    <div class="widget" data-widget-id="quote">
-      <div class="widget-header">
-        <span class="widget-header-title">Täglicher Impuls</span>
-      </div>
-      <div class="widget-body widget-body-quote">
-        <div class="quote-text" id="quoteText">---</div>
-        <div class="quote-author" id="quoteAuthor">---</div>
-      </div>
-    </div>
-
-    <!-- Stats Widget -->
-    <div class="widget" data-widget-id="stats">
-      <div class="widget-header">
-        <span class="widget-header-title">Statistiken</span>
-      </div>
-      <div class="widget-body">
-        <div class="stats-row">
-          <div class="stat-card">
-            <div class="stat-value" id="statTotal">0</div>
-            <div class="stat-label">Gesamt</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value" id="statDone">0</div>
-            <div class="stat-label">Erledigt</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value" id="statOpen">0</div>
-            <div class="stat-label">Offen</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value" id="statRate">0%</div>
-            <div class="stat-label">Rate</div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- To-Do Widget -->
-    <div class="widget" data-widget-id="todo" id="todoCard">
-      <div class="widget-header">
-        <span class="widget-header-title">Aufgaben</span>
-      </div>
-      <div class="widget-body">
-        <div class="todo-input-row">
-          <label for="todoInput" class="sr-only">Aufgabe</label>
-          <input type="text" id="todoInput" placeholder="Neue Aufgabe..." />
-          <label for="todoDate" class="sr-only">Datum</label>
-          <input type="date" id="todoDate" />
-          <label for="todoCategory" class="sr-only">Kategorie</label>
-          <select id="todoCategory">
-            <option value="arbeit">Arbeit</option>
-            <option value="persoenlich">Persönlich</option>
-            <option value="gesundheit">Gesundheit</option>
-            <option value="lernen">Lernen</option>
-          </select>
-          <button class="btn btn-primary" id="todoAdd">Hinzufügen</button>
-        </div>
-        <div class="todo-filters">
-          <button class="filter-btn active" data-filter="all">Alle</button>
-          <button class="filter-btn" data-filter="today">Heute</button>
-          <button class="filter-btn" data-filter="open">Offen</button>
-          <button class="filter-btn" data-filter="done">Erledigt</button>
-        </div>
-        <ul class="todo-list" id="todoList"></ul>
-      </div>
-    </div>
-
-    <!-- Kalender Widget -->
-    <div class="widget" data-widget-id="calendar" id="calendarCard">
-      <div class="widget-header">
-        <span class="widget-header-title">Kalender</span>
-        <div class="cal-header-actions">
-          <button class="cal-import-btn" id="calSyncBtn" title="Kalender synchronisieren">SYNC</button>
-          <button class="cal-expand-btn" id="calExpandBtn" title="Kalender vergrößern">
-            <span class="cal-expand-icon" id="calExpandIcon"></span>
-          </button>
-        </div>
-      </div>
-      <div class="widget-body">
-        <div class="calendar-nav">
-          <button class="calendar-nav-btn" id="calPrev">&lt;</button>
-          <span class="calendar-month-label" id="calMonthLabel">---</span>
-          <button class="calendar-nav-btn" id="calNext">&gt;</button>
-        </div>
-        <div class="calendar-grid" id="calendarGrid"></div>
-      </div>
-    </div>
-
-    <!-- Pomodoro Timer Widget -->
-    <div class="widget" data-widget-id="pomodoro">
-      <div class="widget-header">
-        <span class="widget-header-title">Pomodoro</span>
-        <div class="pomo-mode-indicator" id="pomoModeIndicator">FOCUS</div>
-      </div>
-      <div class="widget-body widget-body-pomodoro">
-        <div class="pomo-display">
-          <canvas class="pomo-ring" id="pomoRing"></canvas>
-          <div class="pomo-time" id="pomoTime">25:00</div>
-          <div class="pomo-label" id="pomoLabel">Bereit</div>
-        </div>
-        <div class="pomo-controls">
-          <button class="pomo-btn" id="pomoStart" title="Start">▶</button>
-          <button class="pomo-btn" id="pomoPause" title="Pause">❚❚</button>
-          <button class="pomo-btn" id="pomoReset" title="Reset">■</button>
-        </div>
-        <div class="pomo-stats">
-          <div class="pomo-stat">
-            <span class="pomo-stat-value" id="pomoSessions">0</span>
-            <span class="pomo-stat-label">Sessions</span>
-          </div>
-          <div class="pomo-stat">
-            <span class="pomo-stat-value" id="pomoTotalMin">0</span>
-            <span class="pomo-stat-label">Min. Fokus</span>
-          </div>
-          <div class="pomo-dots" id="pomoDots"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Fortschritt Chart Widget -->
-    <div class="widget" data-widget-id="progress">
-      <div class="widget-header">
-        <span class="widget-header-title">Fortschritt</span>
-        <div class="chart-range-btns">
-          <button class="chart-range-btn active" data-range="week">Woche</button>
-          <button class="chart-range-btn" data-range="month">Monat</button>
-          <button class="chart-range-btn" data-range="year">Jahr</button>
-        </div>
-      </div>
-      <div class="widget-body">
-        <div class="chart-container">
-          <canvas id="lineChart"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- Kategorien Chart Widget -->
-    <div class="widget" data-widget-id="categories">
-      <div class="widget-header">
-        <span class="widget-header-title">Kategorien</span>
-      </div>
-      <div class="widget-body">
-        <div class="chart-container">
-          <canvas id="donutChart"></canvas>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- MVC Scripts -->
-  <script src="js/storage.js"></script>
-  <script src="js/model.js"></script>
-  <script src="js/view.js"></script>
-  <script src="js/controller.js"></script>
-  <script src="js/init.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>
-
-
